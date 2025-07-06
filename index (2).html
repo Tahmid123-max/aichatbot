@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI ChatBot</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .hidden { display: none; }
+    #image-preview img {
+      max-width: 200px;
+      margin: 10px 0;
+      display: block;
+    }
+    textarea {
+      resize: none;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div id="app-container" role="main" aria-label="AI ChatBot Application">
+    <header>
+      <h1>AI ChatBot</h1>
+      <div class="header-buttons">
+        <button id="menu-btn" aria-label="Toggle menu/settings" title="Menu">☰</button>
+        <button id="clear-btn" aria-label="Clear chat history" title="Clear Chat">Clear Chat</button>
+      </div>
+    </header>
+    <div id="settings-panel" class="hidden" aria-live="polite" aria-atomic="true">
+      <button id="theme-toggle" aria-label="Toggle light or dark mode">☀️ Light Mode</button>
+      <br><br>
+      <button id="blue-glow-toggle" aria-label="Toggle blue glowing theme" title="Toggle Blue Glow Theme">💡 Blue Glow</button>
+      <br><br>
+      <input type="file" id="upload-image-btn" accept="image/*" />
+      <div id="image-preview"></div>
+    </div>
+    <div id="chat-box" role="log" aria-live="polite" aria-relevant="additions" tabindex="0">
+      <!-- Messages will appear here -->
+    </div>
+    <form id="input-form" aria-label="Chat input form">
+      <textarea
+        id="user-input"
+        autocomplete="off"
+        placeholder="Type your message here..."
+        required
+        aria-label="Type your message"
+        rows="1"
+      ></textarea>
+      <button type="submit" id="send-btn" aria-label="Send message">Send</button>
+    </form>
+  </div>
+  <audio id="reply-sound" src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Ting-sound.mp3" preload="auto"></audio>
+  <script src="script.js"></script>
+  <script>
+    const textarea = document.getElementById('user-input');
+    textarea.addEventListener('input', function () {
+      this.style.height = 'auto';
+      this.style.height = this.scrollHeight + 'px';
+    });
+
+    const menuBtn = document.getElementById('menu-btn');
+    const settingsPanel = document.getElementById('settings-panel');
+    menuBtn.addEventListener('click', () => {
+      settingsPanel.classList.toggle('hidden');
+    });
+
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      themeToggle.textContent = document.body.classList.contains('light-mode') ? '🌙 Dark Mode' : '☀️ Light Mode';
+    });
+
+    const blueGlowToggle = document.getElementById('blue-glow-toggle');
+    blueGlowToggle.addEventListener('click', () => {
+      document.body.classList.toggle('blue-glow');
+      blueGlowToggle.textContent = document.body.classList.contains('blue-glow') ? '🔧 Default Theme' : '💡 Blue Glow';
+    });
+
+    const clearBtn = document.getElementById('clear-btn');
+    clearBtn.addEventListener('click', () => {
+      document.getElementById('chat-box').innerHTML = '';
+      document.getElementById('user-input').value = '';
+    });
+
+    const uploadImageBtn = document.getElementById('upload-image-btn');
+    const imagePreview = document.getElementById('image-preview');
+    uploadImageBtn.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          imagePreview.innerHTML = '';
+          imagePreview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+</body>
+</html>
