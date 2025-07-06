@@ -1,4 +1,3 @@
-
 (() => {
   document.addEventListener('DOMContentLoaded', () => {
     const chatBox = document.getElementById('chat-box');
@@ -26,7 +25,7 @@
     const dateKey = 'limit_date';
     const dailyLimit = 30;
 
-    const premiumUsers = ['103.145.210.174']; // Add more IPs here
+    const premiumUsers = ['']; // Add more IPs here
 
     async function getUserIP() {
       try {
